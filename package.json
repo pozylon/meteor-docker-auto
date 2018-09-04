@@ -1,0 +1,31 @@
+{
+  "name": "meteor-docker-auto",
+  "version": "0.1.0",
+  "description": "HTTP Listener to auto update a Git Repository with new Dockerfiles",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pozylon/meteor-docker-auto.git"
+  },
+  "author": "Pascal Kaufmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pozylon/meteor-docker-auto/issues"
+  },
+  "homepage": "https://github.com/pozylon/meteor-docker-auto#readme",
+  "dependencies": {
+    "async-child-process": "^1.1.1",
+    "fs-extra": "^7.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "micro": "^9.3.3",
+    "node-fetch": "^2.2.0",
+    "simple-git": "^1.96.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}

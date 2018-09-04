@@ -1,0 +1,9 @@
+{
+  "name": "meteor-docker-auto",
+  "public": true,
+  "alias": ["meteor-docker-auto.now.sh"],
+  "env": {
+    "GITHUB_KEY": "@github-key",
+    "ACCESS_KEY": "@access-token"
+  }
+}
