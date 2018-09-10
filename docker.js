@@ -7,7 +7,7 @@ const createDockerHubFetch = async () => async ({ body }) => fetch(DOCKER_TRIGGE
     Accept: 'application/json'
   },
   method: 'POST',
-  body: body || null
+  body: JSON.stringify(body)
 })
 
 const sendBuildTrigger = async ({ tag }) => {
