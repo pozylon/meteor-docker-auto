@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "micro",
-    "dev": "micro-dev"
+    "dev": "node -r dotenv/config --inspect node_modules/.bin/micro-dev"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,8 @@
     "simple-git": "^1.96.0"
   },
   "devDependencies": {
+    "dotenv": "^6.0.0",
+    "micro-dev": "^3.0.0",
     "standard": "^12.0.1"
   }
 }

@@ -3,7 +3,14 @@
   "public": true,
   "alias": ["meteor-docker-auto.now.sh"],
   "env": {
+    "GITHUB_ORGANIZATION": "pozylon",
+    "GITHUB_REPOSITORY": "meteor-docker-auto",
+    "GITHUB_USER_EMAIL": "bot@fivelines.ch",
+    "GITHUB_USER_NAME": "Meteor Docker Auto Bumper",
+    "GITHUB_INSTALLATION_ID": "318520",
+    "GITHUB_APP_ID": "17023",
     "GITHUB_KEY": "@github-key",
-    "ACCESS_KEY": "@access-token"
+    "ACCESS_KEY": "@access-token",
+    "DOCKER_TRIGGER_URL": "@docker-trigger-url"
   }
 }

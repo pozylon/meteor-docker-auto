@@ -3,21 +3,21 @@ const fs = require('fs')
 const util = require('util')
 const fetch = require('node-fetch')
 
-const { GITHUB_KEY_PATH, GITHUB_KEY } = process.env
+const {
+  GITHUB_KEY_PATH, GITHUB_KEY,
+  GITHUB_INSTALLATION_ID, GITHUB_APP_ID } = process.env
 
 const getInstallationToken = async () => {
-  const installationId = '318520'
-  const appId = '17023'
   const readFile = util.promisify(fs.readFile)
   const cert = GITHUB_KEY_PATH && await readFile(GITHUB_KEY_PATH)
   const certData = cert || Buffer.from(GITHUB_KEY, 'base64').toString()
   const jwtToken = jwt.sign({
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + (1 * 60),
-    iss: appId
+    iss: GITHUB_APP_ID
   }, certData, { algorithm: 'RS256' })
 
-  const tokenResult = await fetch(`https://api.github.com/installations/${installationId}/access_tokens`, {
+  const tokenResult = await fetch(`https://api.github.com/installations/${GITHUB_INSTALLATION_ID}/access_tokens`, {
     method: 'POST',
     headers: {
       Accept: 'application/vnd.github.machine-man-preview+json',

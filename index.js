@@ -5,11 +5,12 @@ const fs = require('fs-extra')
 const { URL } = require('url')
 const { execAsync } = require('async-child-process')
 const { getInstallationToken } = require('./github')
+const { sendBuildTrigger } = require('./docker')
 
 const logger = console
-const { ACCESS_KEY } = process.env
-const GITHUB_ORGANIZATION = 'pozylon'
-const GITHUB_REPOSITORY = 'meteor-docker-auto'
+const {
+  GITHUB_ORGANIZATION, GITHUB_REPOSITORY,
+  ACCESS_KEY, GITHUB_USER_NAME, GITHUB_USER_EMAIL } = process.env
 
 module.exports = async (req, res) => {
   const url = new URL(`http://${req.headers.host}${req.url}`)
@@ -22,6 +23,7 @@ module.exports = async (req, res) => {
   const version = url
     .searchParams.get('version')
     .replace('release/METEOR@', '')
+
   if (!version) {
     const statusCode = 500
     return send(res, statusCode, 'Version has to be provided')
@@ -41,8 +43,8 @@ module.exports = async (req, res) => {
     logger.log(`checkout ${branch}...`)
     await git.checkout(branch)
   }
-  await git.addConfig('user.name', 'Meteor Docker Auto Bumper')
-  await git.addConfig('user.email', 'hello@fivelines.ch')
+  await git.addConfig('user.name', GITHUB_USER_NAME)
+  await git.addConfig('user.email', GITHUB_USER_EMAIL)
   const { stdout } = await execAsync(`node add-version.js ${tempDir}${folder} ${version}`)
   logger.log(stdout)
   await git.add(['.'])
@@ -50,6 +52,8 @@ module.exports = async (req, res) => {
   await git.addTag(version)
   await git.push('origin', 'master', { '--set-upstream': null, '--force': null })
   await git.pushTags()
+  await sendBuildTrigger({ tag: version })
+
   const statusCode = 201
   return send(res, statusCode, 'Version ' + version + ' created')
 }
