@@ -1,15 +1,33 @@
 # Why?
 
-Meteor does not provide an official Dockerfile, so this will try to follow all versions and release them as docker images in an automated way so we can speed up our onbuild Meteor Docker images where we need them and allows for easy multi-stage Dockerfile deployment.
+Meteor does not provide an official Dockerfile, so this app will try to follow all versions and release them as docker images in an automated way so we can speed up our onbuild Meteor Docker images where we need them and allows for easy multi-stage Dockerfile deployment.
 
-# How?
+# How does this all work?
 
-1. Zapier listens to https://github.com/meteor/meteor/releases.atom RSS Feed
-2. If there is a new item Zapier calls a now.sh deployment deployed from this repository.
-3. The webservice uses a Github App's private file and accesses pozylon/meteor-docker-auto, replicating Dockerfile-ubuntu.template with the corresponding new version -> VERSION-X/Dockerfile + latest/Dockerfile
-4. An automated build configuration on Docker hub picks up the changes in Github and automatically builds the new Meteor version
+1. The node app in this repository is deployed to Zeit's Now Platform with credentials for Github and Docker Hub
+1. A Zapier app listens to the https://github.com/meteor/meteor/releases.atom RSS Feed and if there is a new item in the feed (Meteor version), it invokes a call to the node app with the new version number as argument.
+3. The webapp uses a Github App's private file and accesses pozylon/meteor-docker-auto, replicating Dockerfile-ubuntu.template with the corresponding new version -> VERSION-X/Dockerfile + latest/Dockerfile and push the changes back to Github, auto updating itself.
+4. At the end the webapp starts the build triggers for the automated build configuration on Docker hub and new docker build tags for the docker image "pozylon/meteor-docker-auto" are created
 
-# Example Dockerfile for Multi-stage-building
+# How can I use the ``pozylon/meteor-docker-auto`` image?
+
+There is multiple ways how you can use this meteor docker image but basically you
+have to add a file named ``Dockerfile`` to the root of your app and run ``docker build .``
+Here are some examples of Dockerfiles that you could use:
+
+**Simple Image for development**
+
+```dockerfile
+FROM pozylon/meteor-docker-auto as bundler
+RUN adduser -D -u 501 -h /home/meteor meteor
+ADD . /source
+WORKDIR /source
+USER meteor
+RUN meteor npm install
+CMD meteor --no-release-check 
+```
+
+**Multi-stage-building of Alpine Production Image of your Meteor app**
 
 ```dockerfile
 FROM pozylon/meteor-docker-auto as bundler

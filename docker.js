@@ -12,10 +12,16 @@ const createDockerHubFetch = async () => async ({ body }) => fetch(DOCKER_TRIGGE
 
 const sendBuildTrigger = async ({ tag }) => {
   const fetcher = await createDockerHubFetch()
-  return fetcher({
+  await fetcher({
     body: {
       source_type: 'Tag',
       source_name: tag
+    }
+  })
+  await fetcher({
+    body: {
+      source_type: 'Branch',
+      source_name: 'master'
     }
   })
 }
