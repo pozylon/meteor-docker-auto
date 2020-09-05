@@ -1,6 +1,6 @@
 FROM ubuntu:bionic
 
-ENV METEOR_VERSION 1.11
+ENV METEOR_VERSION 1.10
 
 RUN apt-get update -q -q && \
  apt-get --yes --force-yes install curl python build-essential git && \
