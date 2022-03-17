@@ -23,7 +23,7 @@
     "jsonwebtoken": "^8.4.0",
     "micro": "^9.3.3",
     "node-fetch": "^2.3.0",
-    "simple-git": "^1.107.0"
+    "simple-git": "^3.3.0"
   },
   "devDependencies": {
     "dotenv": "^6.1.0",
